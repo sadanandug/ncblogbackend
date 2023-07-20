@@ -1,7 +1,9 @@
-import { error } from "console";
+//import { error } from "console";
 import Category from "../models/category.model";
 import resposnes from "../utils/responses";
+import Blog from "../models/blog.model";
 import { Request,Response  } from "express";
+import responses from "../utils/responses";
 
 export const list=async(req:Request,res:Response)=>{
     try{
@@ -66,3 +68,43 @@ export const remove = async (req: Request, res: Response) => {
         return  resposnes.serverErrorResponse(res);
     }
 }
+export const getBlogsByCategoryName = async (req:Request,res:Response) => {
+  const { categoryName } = req.params;
+  try {
+    // Find the category by name
+    const category = await Category.findOne({ name: categoryName });
+    if (!category) {
+      return responses.notFoundResponse(res, "Category Not Found");
+    }
+    // Find blogs based on the category's ID
+    const blogs = await Blog.find({ categories: category._id });
+    return responses.successResponse(res, blogs,'successfully get');
+  } catch (error) {
+    return responses.serverErrorResponse(res);
+  }
+};
+export const blogCategorySummary = async (req:Request, res:Response) => {
+  try {
+    // Fetch all categories
+    const categories = await Category.find();
+    console.log('-------',categories);
+    // Create an empty array for the category summaries
+    const categorySummaries = [];
+    // Iterate through each category
+    for (const category of categories) {
+      // Count the number of blogs belonging to the current category
+      const blogCount = await Blog.countDocuments({ categories: category._id });
+      // Create a category summary object with the category name and blog count
+      const categorySummary = {
+        categoryName: category.name,
+        blogCount: blogCount,
+      };
+      // Add the category summary to the array
+      categorySummaries.push(categorySummary);
+    }
+    return responses.successResponse(res,categorySummaries,'status get successfull');
+    res.status(200).json({ categorySummaries });
+  } catch (error) {
+   return responses.serverErrorResponse(res);
+  }
+};

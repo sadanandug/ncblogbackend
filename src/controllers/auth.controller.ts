@@ -19,16 +19,9 @@ const redirectUrl = "http://localhost:8080/api/auth/google/callback";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    console.log('++++++++++++++++++++++++++++');
     let validate = registerValidation(req.body);
     console.log(req.body);
     console.log(validate);
-    // if (validate.error) {
-    //   return resposnes.badRequestResponse(
-    //     res,
-    //     validate.error?.details[0].message
-    //   );
-    // }
     let user = await User.findOne({
       $or: [
         {
@@ -42,15 +35,16 @@ export const register = async (req: Request, res: Response) => {
     // console.log('=====================',user);
     const checkEmail=req.body.email;
     console.log('----------------',checkEmail);
-    const otpModel = await otpSchemaModel.findOne({ checkEmail });
-    if(!otpModel){
-      return resposnes.notFoundResponse(res, "Press on Send OTP to send email");
-    }
-    if (otpModel.verify===false) {
-      return resposnes.verificationFailed(res, "Email not Verified");
-    }
-    // Check the verify field of the OTP model
-    const isVerified = otpModel.verify;
+    // const otpModel = await otpSchemaModel.findOne({ email:checkEmail });
+    // console.log('otpModel',otpModel);
+    // if(!otpModel){
+    //   return resposnes.notFoundResponse(res, "Press on Send OTP to send email");
+    // }
+    // if (otpModel.verify===false) {
+    //   return resposnes.verificationFailed(res, "Email not Verified");
+    // }
+    // // Check the verify field of the OTP model
+    // const isVerified = otpModel.verify;
     if (user) {
       return resposnes.allreadyExistResponse(res, "User Allready Exist");
     }
@@ -233,10 +227,8 @@ export const forgotPassword = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
     const filter = { email };
-    //
     //check
     const user = await User.findOne(filter);
-
     //validation
     if (!user) {
       return resposnes.notFoundResponse(res, "email not registered");

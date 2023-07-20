@@ -63,7 +63,7 @@ const serverErrorResponse = (res: Response, msg = "Server Error") => {
 const successfullyChangedResponse = (
   res: Response,
   data: Object,
-  msg = "Password changed successfully."
+  msg = "Password changed successfully."  
 ) => {
   res.status(201).json({ 
     data: data,

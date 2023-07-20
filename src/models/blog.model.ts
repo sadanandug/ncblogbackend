@@ -54,7 +54,7 @@ const blogSchema = new mongoose.Schema(
     content:{
       type: String
     },
-    category_id: {
+    categories: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category",    },
     
@@ -67,13 +67,12 @@ const blogSchema = new mongoose.Schema(
     },
     blog_status: {
       type: String,
-      enum : ['progress','pending','publish'],
+      enum : ['progress','approved', 'reject'],
       default: 'progress'
     }
   },
   { timestamps: true }
 );
-
 const Blog = mongoose.model("Blog", blogSchema);
 export default Blog;
 

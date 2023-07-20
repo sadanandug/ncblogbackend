@@ -1,46 +1,19 @@
 import express from "express";
 import * as controllers from "../controllers/blog.controller1";
-// import { isUserAuthenticated } from "../middlewares/auth2.middleware";
-import multer, { FileFilterCallback } from "multer";
+import {isBlogAuthenticated} from "../middlewares/blog.middleware";
 const router = express.Router();
 router.use(function (req, res, next) {
   console.log("inside router");
-  // isUserAuthenticated(req, res, next);
-   next();
-  // res.header(
-  //   "Access-Control-Allow-Headers",
-  //   "x-access-token, Origin, Content-Type, Accept"
-  // );
-
+  // isBlogAuthenticated(req, res, next);
+  next();
 });
-
-// router.get("/:id/list", controllers.list);
-
-//router.post("/:id/create", upload.array("files"), controllers.create);
-
-router.post("/:id", controllers.getSingleBlog);//---------------------- integrated
+router.get("/:id", controllers.getSingleBlog);//---------------------- integrated
 router.post('/:id/create',controllers.uploadFileMiddleware, controllers.create);
-// router.post("/test", controllers.testForm)
-
-//router.get("/category/:category_id", controllers.getBlogsByCategory);
-  
-// router.put("/:id/:blog_id/update", upload.array("files"),controllers.update);
-
-// router.delete("/:id", controllers.delete_blog);
-router.get("/readAllBlogs", controllers.readAllBlogs);//-----------------integrated
-
-// router.get("/test/test", controllers.getpic);
+router.get('/:status',controllers.getBlogsByStatus);
+router.post('/summaryByStatus',controllers.blogStatusSummary);
+router.post("/readAllBlogs", controllers.readAllBlogs);//-----------------integrated
 
 export default router;
-
-
-
-
-
-
-
-
-
 
 
 
@@ -189,110 +162,3 @@ export default router;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import express from "express";
-// import * as controllers from "../controllers/blog.controller";
-// import type { Request, Response,NextFunction } from "express";
-// import { isUserAuthenticated } from "../middlewares/auth.middleware";
-// //const upload=require('../controllers/blog.controller')
-// const router = express.Router();
-// import {s3Uploadv3} from "../utils/s3";
-
-// router.use(function (req, res, next) {
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "x-access-token, Origin, Content-Type, Accept"
-//   );
-//   next();
-// });
-// //create blog by user id
-// router.post("/:id/create", controllers.createBlog);
-// //get single blog by blog id--------------------------npm -----executed
-// // router.get("/:id", controllers.getSingleBlog);//get single blog and readAllBlogs are create contradicton
-// //All the blog on website published by user------------executed
-// router.get("/:id/list", controllers.list);
-// //To delete Blog-------------------------------------------executed
-// router.delete("/:id", controllers.delete_blog);
-// //api to Publish content by blogId-------------------------executed
-// router.patch("/:id/blog_status",controllers.getBlogStataus);
-// //api to read all blogs------------------------- -------executed ========admin
-// router.get("/readAllBlogs", controllers.readAllBlogs);
-// //list of publish blog
-// // router.get("/readPublishBlog",controller.readPublishBlog);
-
-// //get blog by category
-// //router.get("/category/:name", controllers.getBlogsByCategory);
-// // router.post("/category/manage", controllers.manageDirectory);
-// //update blog
-// //router.put("/:id/:blog_id/update", controllers.update);
-// //to Ipload Image:
-// // router.post("/upload", controllers.uploadsImage);
-// export default router;

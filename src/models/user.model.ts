@@ -27,7 +27,14 @@ const UserSchema = new mongoose.Schema(
       require:true
     },
     profilePic:{
-      type:String
+      type:String,
+      default:'https://drive.google.com/file/d/1JXkvesO9EgphbvvQv4Qw6wNi_HFEVjJs/view?usp=sharing'
+    },
+    web_link:{
+      type:String,
+    },
+    gender:{
+      type:String,
     }
   },
   { timestamps: true }
